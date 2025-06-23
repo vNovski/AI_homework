@@ -1,0 +1,72 @@
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-container">
+    <div class="modal-header">
+      <div class="user-info">
+        <h2 class="user-name">{{ user.name }}</h2>
+        <p class="user-email">{{ user.email }}</p>
+      </div>
+      <button 
+        class="close-button" 
+        (click)="onClose()"
+        title="Close modal"
+      >
+        ×
+      </button>
+    </div>
+
+    <div class="modal-content">
+      <div class="section">
+        <h3 class="section-title">Address</h3>
+        <div class="address-content">
+          <p class="address-line">{{ user.address.street }}, {{ user.address.suite }}</p>
+          <p class="address-line">{{ user.address.city }}, {{ user.address.zipcode }}</p>
+          <a 
+            [href]="getMapUrl()" 
+            target="_blank"
+            class="map-link"
+          >
+            📍 View on map
+          </a>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3 class="section-title">Contact</h3>
+        <div class="contact-content">
+          <div class="contact-item">
+            <span class="contact-label">Phone:</span>
+            <span class="contact-value">{{ user.phone }}</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Website:</span>
+            <a 
+              [href]="formatWebsite(user.website)" 
+              target="_blank"
+              class="contact-link"
+            >
+              {{ user.website }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3 class="section-title">Company</h3>
+        <div class="company-content">
+          <div class="company-item">
+            <span class="company-label">Name:</span>
+            <span class="company-value">{{ user.company.name }}</span>
+          </div>
+          <div class="company-item">
+            <span class="company-label">Catchphrase:</span>
+            <span class="company-value">{{ user.company.catchPhrase }}</span>
+          </div>
+          <div class="company-item">
+            <span class="company-label">Business:</span>
+            <span class="company-value">{{ user.company.bs }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

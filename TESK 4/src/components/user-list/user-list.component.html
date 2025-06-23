@@ -1,0 +1,93 @@
+<div class="user-list-container">
+  <header class="header">
+    <h1 class="title">Users</h1>
+  </header>
+
+  <div *ngIf="isLoading" class="loading">
+    <div class="loading-spinner"></div>
+    <p>Loading users...</p>
+  </div>
+
+  <div *ngIf="error" class="error">
+    <p>{{ error }}</p>
+    <button (click)="loadUsers()" class="retry-button">Retry</button>
+  </div>
+
+  <div *ngIf="!isLoading && !error" class="table-container">
+    <div class="table-header">
+      <div class="column name-column">NAME / EMAIL</div>
+      <div class="column address-column">ADDRESS</div>
+      <div class="column phone-column">PHONE</div>
+      <div class="column website-column">WEBSITE</div>
+      <div class="column company-column">COMPANY</div>
+      <div class="column action-column">ACTION</div>
+    </div>
+
+    <div class="table-body">
+      <div 
+        *ngFor="let user of users" 
+        class="user-row"
+        (click)="openUserModal(user)"
+      >
+        <div class="column name-column">
+          <div class="name">{{ user.name }}</div>
+          <div class="email">{{ user.email }}</div>
+        </div>
+        
+        <div class="column address-column">
+          {{ getDisplayAddress(user) }}
+        </div>
+        
+        <div class="column phone-column">
+          {{ user.phone }}
+        </div>
+        
+        <div class="column website-column">
+          <a 
+            [href]="formatWebsite(user.website)" 
+            target="_blank"
+            class="website-link"
+            (click)="$event.stopPropagation()"
+          >
+            {{ user.website }}
+          </a>
+        </div>
+        
+        <div class="column company-column">
+          {{ user.company.name }}
+        </div>
+        
+        <div class="column action-column">
+          <button 
+            (click)="deleteUser($event, user.id)"
+            class="delete-button"
+            title="Delete user"
+          >
+            ×
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="users.length === 0" class="empty-state">
+      <p>No users found</p>
+    </div>
+  </div>
+</div>
+
+<app-user-modal 
+  *ngIf="isModalOpen && selectedUser"
+  [user]="selectedUser"
+  (close)="closeModal()"
+></app-user-modal>
+
+<app-confirmation-modal
+  *ngIf="isConfirmationModalOpen"
+  title="Delete User"
+  [message]="'Are you sure you want to delete ' + userNameToDelete + '? This action cannot be undone.'"
+  confirmText="Delete"
+  cancelText="Cancel"
+  confirmButtonType="danger"
+  (confirm)="confirmDelete()"
+  (cancel)="closeConfirmationModal()"
+></app-confirmation-modal>
